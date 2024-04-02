@@ -10,6 +10,25 @@ from textnode import (
 
 import re
 
+
+def text_to_textnodes(text):
+    results = []
+    base_node = TextNode(text, text_type_text)
+    results = (split_nodes_all_delimiter(base_node))
+    results = (split_nodes_image(results))
+    results = (split_nodes_link(results))
+    return results
+
+
+def split_nodes_all_delimiter(node):
+    results = []
+    results = (split_nodes_delimiter([node], "**", text_type_bold))
+    results = (split_nodes_delimiter(results, "*", text_type_italic))
+    results = (split_nodes_delimiter(results, "`", text_type_code))
+    return results
+
+
+
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     results = []
     for node in old_nodes:
