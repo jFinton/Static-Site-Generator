@@ -99,7 +99,7 @@ def split_nodes_link(old_nodes):
     return results
 
 
-
+# -----Returns Tuple of (text, url)-----
 def extract_markdown_images(text):
     result = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
     return result
