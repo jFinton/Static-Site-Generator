@@ -20,7 +20,8 @@ def main():
     markdown_file = file_path_content + "/index.md"
     template_file = "./template.html"
 
-    generate_page(markdown_file, template_file, index_file)
+    generate_page_recursive(file_path_content, template_file, file_path_public)
+    # generate_page(markdown_file, template_file, index_file)
 
 
 def copy_files(source_file_path, dest_file_path):
@@ -73,11 +74,21 @@ def generate_page(from_path, template_path, dest_path):
     template = template.replace("{{ Title }}", page_title)
     template = template.replace("{{ Content }}", html_string)
 
-    print(template)
-
+    dest_dir_path = os.path.dirname(dest_path)
+    if dest_dir_path != "":
+        os.makedirs(dest_dir_path, exist_ok=True)
     file = open(dest_path, "w")
     file.write(template)
     file.close()
 
+
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+    dir_list = os.listdir(dir_path_content)
+    for file_name in dir_list:
+        original_file = os.path.join(dir_path_content, file_name) #./content/index.md
+        if os.path.isfile(original_file):
+            generate_page(original_file, template_path, os.path.join(dest_dir_path, "index.html"))
+        else:
+            generate_page_recursive(original_file, template_path, os.path.join(dest_dir_path, file_name))
 
 main()
